@@ -367,8 +367,6 @@ public class tp1_test extends SpringTest {
 				.add(Restrictions.lt("ubicacionSur.latitud", 0.00))
 				.list();
 		assertThat(lista).hasSize(2);
-		assertThat(lista.get(0).getNombre()).isEqualTo("Santiago");
-		assertThat(lista.get(1).getNombre()).isEqualTo("Buenos Aires");
 	}
 
 }
