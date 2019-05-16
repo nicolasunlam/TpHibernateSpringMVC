@@ -1,18 +1,13 @@
 package ar.edu.unlam.tallerweb1.controladores;
 
 import javax.inject.Inject;
-import javax.persistence.criteria.CriteriaBuilder.Case;
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import ar.edu.unlam.tallerweb1.modelo.Punto6;
-import ar.edu.unlam.tallerweb1.modelo.Usuario;
 import ar.edu.unlam.tallerweb1.servicios.ServicioLogin;
 
 @Controller
@@ -34,67 +29,49 @@ public class ControladorLogin {
 	// Escucha la url /, y redirige a la URL /login, es lo mismo que si se invoca la url /login directamente.
 	@RequestMapping(path = "/", method = RequestMethod.GET)
 	public ModelAndView inicio() {
-		return new ModelAndView("redirect:/punto6");
-	}
-	
-	@RequestMapping("/punto6")
-	public ModelAndView irPunto6() {
-
-		ModelMap modelo = new ModelMap();
-		Punto6 punto = new Punto6();
-		modelo.put("punto6", punto);
-		return new ModelAndView("punto6", modelo);
+		return new ModelAndView("redirect:/error");
 	}
 	
 	//Punto6
-	@RequestMapping(path = "/mostrarPunto", method = RequestMethod.POST)
-	public ModelAndView mostrarPunto(@ModelAttribute("punto6") Punto6 punto, HttpServletRequest request) {
-		ModelMap model = new ModelMap();
-		
-		model.put("operacion", punto.getOperacion());
-		model.put("cadena", punto.getCadena());
-		String operacion = punto.getOperacion();
-		String resultado = new String ();
-		if (operacion == "pasar") {
-			model.put("operacion", punto.getOperacion());
-			model.put("cadena", punto.getCadena());
-			resultado = punto.getCadena().toUpperCase();
-			model.put("resultado", resultado);
+	@RequestMapping("/{operacion}/{valor}")
+	public ModelAndView operacion(@PathVariable String operacion , @PathVariable String valor , String resultado) {
+		ModelMap modelo = new ModelMap();
+
+		switch(operacion) {
+
+		case "pasarAMayuscula":
+			resultado = valor.toUpperCase();
+			break;
+
+		case "pasarAMinuscula":
+			resultado = valor.toLowerCase();
+			break;
+
+		case "invertirOrden":
+			StringBuilder builder = new StringBuilder(valor);
+			resultado = builder.reverse().toString();
+			break;
+
+		case "cantidadDeCaracteres":
+			int result = valor.length();
+			resultado = Integer.toString(result);
+			break;
+		default:
+			return new ModelAndView("redirect:/error");
 		}
-		switch ( operacion ) {
-	      case "pasar-a-mayusculas":
-	    	  model.put("operacion", punto.getOperacion());
-	    	  model.put("cadena", punto.getCadena());
-	    	  resultado = punto.getCadena().toUpperCase();
-	    	  model.put("resultado", resultado);
-	           break;
-	      case "pasar-a-minusculas":
-	    	  model.put("operacion", punto.getOperacion());
-	    	  model.put("cadena", punto.getCadena());
-	    	  resultado = punto.getCadena().toLowerCase();
-	    	  model.put("resultado", resultado);
-	           break;
-	      case "invertir-orden":
-	    	  model.put("operacion", punto.getOperacion());
-	    	  model.put("cadena", punto.getCadena());
-	    	  for (int i = punto.getCadena().length()-1; i>=0; i--){
-	             resultado += punto.getCadena().charAt(i);
-	          }
-	    	  model.put("resultado", resultado);
-	           break;
-	      case "cantidad-de-caracteres":
-	    	  model.put("operacion", punto.getOperacion());
-	    	  model.put("cadena", punto.getCadena());
-	    	  resultado = Integer.toString(punto.getCadena().length());
-	    	  model.put("resultado", resultado);
-	           break;
-	      default:
-	           System.out.println("error" );
-	           break;
-	      }
-		
-		return new ModelAndView("mostrarPunto", model);
+
+		modelo.put("operacion", operacion);
+		modelo.put("valor", valor);
+		modelo.put("resultado", resultado);
+
+
+		return new ModelAndView("resultado",modelo);
 	}
-	
+
+	@RequestMapping("/error")
+	public ModelAndView operacionDeCaracteresErronea() {
+		ModelMap modelo = new ModelMap();
+		return new ModelAndView("error",modelo);
+	}	
 	
 }

@@ -7,9 +7,10 @@
 <title>Insert title here</title>
 </head>
 <body>
-Mostrar Punto
-<h4>
-El resultado de ${operacion} sobre ${cadena} es ${resultado}
-</h4>
+
+	<h2>
+		El resultado de la operación "${operacion}" de "${valor}" es: "${resultado}"
+	</h2>
+
 </body>
 </html>
