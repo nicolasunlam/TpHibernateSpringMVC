@@ -185,8 +185,6 @@ public class tp1_test extends SpringTest {
 	}
 
 	//4- Hacer con junit un test que busque todos los países cuya capital están al norte del trópico de cáncer.
-<<<<<<< HEAD
-=======
 
 	@Test @Transactional @Rollback
 	public void testQueBuscoPaisesCapitalNorteCancer(){
@@ -370,7 +368,6 @@ public class tp1_test extends SpringTest {
 	}
 
 }
->>>>>>> 5918159340ab4435631f36297bbe8591020e4920
 
 	@Test @Transactional @Rollback
 	public void testQueBuscoPaisesCapitalNorteCancer(){
